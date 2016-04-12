@@ -17,9 +17,15 @@ class Tasks extends Auth_Controller
 
         if(!isset($project_id) || $this->form_validation->is_natural_no_zero($project_id)===FALSE)
         {
+            $this->postal->add('The project doesn\'t exist','error');
             redirect('projects');
         }
-        $this->data['project'] = $this->project_model->where('user_id',$this->current_user->id)->with_tasks('fields:id,title,ect,due,time_spent,details,status,closed|order_inside:updated_at DESC|where:`closed`=\'0\'')->get($project_id);
+        $project = $this->project_model->where('user_id',$this->current_user->id)->with_tasks('fields:id,title,ect,due,time_spent,details,status,closed|order_inside:updated_at DESC|where:`closed`=\'0\'')->get($project_id);
+        if($project===FALSE)
+        {
+            redirect('projects');
+        }
+        $this->data['project'] = $project;
         $this->data['before_closing_body'] = $this->load->view('tasks/timer_view.php',$this->data,TRUE);
         $this->render('tasks/index_view');
     }
