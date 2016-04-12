@@ -71,7 +71,14 @@ class Auth_Controller extends MY_Controller {
 
         if($this->ion_auth->logged_in()===FALSE)
         {
+            $_SESSION['redirect_from'] = current_url();
             redirect('user/login');
+        }
+        if(isset($_SESSION['redirect_from']))
+        {
+            $redirect = $_SESSION['redirect_from'];
+            unset($_SESSION['redirect_from']);
+            redirect($redirect);
         }
         $this->current_user = $this->ion_auth->user()->row();
         $_SESSION['user_id'] = $this->current_user->id;
