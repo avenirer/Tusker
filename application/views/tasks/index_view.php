@@ -13,6 +13,7 @@
     </style>
     <div class="col-lg-12" style="text-align:right">
         <?php echo anchor('projects', 'Back to projects','class="btn btn-primary back-projects"');?>
+        <?php echo anchor('tasks/list-project/'.$project->id,'List all tasks','class="btn btn-primary back-projects"');?>
     </div>
     <div class="col-lg-7">
         <h2>Open tasks</h2>

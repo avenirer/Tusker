@@ -30,6 +30,24 @@ class Tasks extends Auth_Controller
         $this->render('tasks/index_view');
     }
 
+    public function list_project($project_id = NULL)
+    {
+
+        if(!isset($project_id) || $this->form_validation->is_natural_no_zero($project_id)===FALSE)
+        {
+            $this->postal->add('The project doesn\'t exist','error');
+            redirect('projects');
+        }
+        $project = $this->project_model->where('user_id',$this->current_user->id)->with_tasks(array('fields'=>'id,title,ect,due,time_spent,details,status,closed,updated_at', 'order_inside'=>'updated_at DESC', 'with'=>array('relationship'=>'history','fields'=>'comment','order_inside'=>'created_at DESC')))->get($project_id);
+
+        if($project===FALSE)
+        {
+            redirect('projects');
+        }
+        $this->data['project'] = $project;
+        $this->render('tasks/list_project_view');
+    }
+
     public function get_finished_tasks($project_id)
     {
         $this->data['project'] = $this->project_model->where('user_id',$this->current_user->id)->with_tasks('fields:id,title,ect,due,time_spent,details,status,closed|order_inside:updated_at DESC|where:`closed`=\'1\'')->get($project_id);
@@ -159,6 +177,8 @@ class Tasks extends Auth_Controller
 
 
     }
+    
+    
 
     public function update_time()
     {
