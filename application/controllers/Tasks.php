@@ -38,7 +38,7 @@ class Tasks extends Auth_Controller
             $this->postal->add('The project doesn\'t exist','error');
             redirect('projects');
         }
-        $project = $this->project_model->where('user_id',$this->current_user->id)->with_tasks(array('fields'=>'id,title,ect,due,time_spent,details,status,closed,updated_at', 'order_inside'=>'updated_at DESC', 'with'=>array('relationship'=>'history','fields'=>'comment','order_inside'=>'created_at DESC')))->get($project_id);
+        $project = $this->project_model->where('user_id',$this->current_user->id)->with_tasks(array('fields'=>'id,title,ect,due,time_spent,details,status,closed,updated_at', 'order_inside'=>'updated_at DESC', 'with'=>array('relationship'=>'history','fields'=>'comment,created_at','order_inside'=>'created_at DESC')))->get($project_id);
 
         if($project===FALSE)
         {

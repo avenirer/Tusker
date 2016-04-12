@@ -26,30 +26,51 @@
                 $ect_minutes = floor(($ect%3600)/60);
                 //$ect_seconds = floor(($ect%60));
                 ?>
+        <div class="row">
+            <div class="col-lg-8">
                 <h3><?php echo $task->title;?></h3>
-                <div><?php echo $task->details;?></div>
-                <?php
-                if($ect!==0) {
-                ?>
-                    <div>Estimated completion time: <?php echo $task->ect; ?></div>
-                <?php
-                }
-                ?>
-                <div>Time spent: <?php echo $days.' days, '.$hours.' hours, '.$minutes.' minutes';?></div>
-                <div>Status: <?php echo $task->status;?>%</div>
-                <div>Closed: <?php echo $task->closed;?></div>
-                <div>Last update: <?php echo $task->updated_at;?></div>
+                <h4>Task details:</h4>
+                <div class="well well-sm"><?php echo $task->details;?></div>
                 <?php
                 if(isset($task->history) && !empty($task->history))
                 {
-                    echo '<div>History:</div>';
+                    echo '<h4>History:</h4>';
+                    echo '<table class="table table-striped table-condensed">';
+                    echo '<tbody>';
                     foreach($task->history as $event)
                     {
-                        echo '<div>'.$event->comment.'</div>';
+
+                        echo '<tr>';
+                        echo '<th style="white-space: nowrap;">';
+                        $created_at = explode(' ',$event->created_at);
+                        $created_at_date = implode('-',array_reverse(explode('-',$created_at[0])));
+                        $created_at_time = $created_at[1];
+                        echo $created_at_date.'<br />'.$created_at_time;
+                        echo '</th>';
+                        echo '<td>'.$event->comment.'</td>';
+                        echo '</tr>';
                     }
+                    echo '</tbody>';
+                    echo '</table>';
                 }
                 ?>
-
+            </div>
+            <div class="col-lg-4">
+                <div class="well well-sm text-center" style="color: #337ab7;">
+                    <div style="font-size:36px; font-weight:bold;"><?php echo $task->status;?>%</div>
+                    <?php
+                    echo ($task->closed=='1') ? '<span class="glyphicon glyphicon-ok" style="font-size: 56px;"></span>' : '<span class="glyphicon glyphicon-asterisk" style="font-size: 56px;"></span>';?>
+                    <div>Last update:<br /><?php echo $task->updated_at;?></div>
+                    <?php
+                    if($ect!=0) {
+                        ?>
+                        <div>Estimated completion time:<br /><?php echo $ect_days.' days, '.$ect_hours.' hours, '.$ect_minutes.' minutes';?></div>
+                        <?php
+                    }
+                    ?>
+                    <div>Time spent:<br /><?php echo $days.' days, '.$hours.' hours, '.$minutes.' minutes';?></div>
+                </div>
+            </div>
                 <?php
             }
 
