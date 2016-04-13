@@ -72,7 +72,7 @@ class Tasks extends Auth_Controller
         $this->form_validation->set_rules('ect_days','ECT days','trim|is_natural');
         $this->form_validation->set_rules('ect_hours','ECT hours','trim|is_natural');
         $this->form_validation->set_rules('ect_minutes','ECT minutes','trim|is_natural');
-        $this->form_validation->set_rules('due','Due date','trim|required');
+        $this->form_validation->set_rules('due','Due date','trim');
         $this->form_validation->set_rules('details','ECT minutes','trim');
         if($this->form_validation->run()===FALSE)
         {
@@ -97,7 +97,7 @@ class Tasks extends Auth_Controller
             $due_date = $this->input->post('due');
             $due_date = implode('-', array_reverse(explode('-',$due_date)));
             $details = strip_tags($this->input->post('details'));
-            if($this->task_model->where(['title'=>$title, 'user_id'=>$_SESSION['user_id']])->get())
+            if($this->task_model->where(['title'=>$title, 'user_id'=>$_SESSION['user_id'], 'project_id'=>$project_id])->get())
             {
                 $this->postal->add('A task with that name already exists','error');
             }

@@ -57,27 +57,28 @@
             </div>
             <div class="col-lg-2">
                 <div class="well well-sm text-center" style="color: #337ab7;">
-                    <div style="font-size:18px; font-weight:bold;"><?php echo $task->status;?>%</div>
-                    <?php
-                    echo ($task->closed=='1') ? '<span class="glyphicon glyphicon-ok" style="font-size: 16px;"></span>' : '<span class="glyphicon glyphicon-asterisk" style="font-size: 16px;"></span>';?>
-                    <div>Last update:<br />
+                    <div style="font-size:16px; font-weight:bold;"><?php echo $task->status;?>% <?php echo ($task->closed=='1') ? '<span class="glyphicon glyphicon-check"></span>' : '<span class="glyphicon glyphicon-unchecked"></span>';?></div>
+                    <div><span class="glyphicon glyphicon-pencil"></span>
                         <?php
                         $updated_at = explode(' ',$task->updated_at);
-                        $updated_at_date = implode('-',array_reverse(explode('-',$updated_at[0])));
-                        $updated_at_time = $updated_at[1];
-                        echo $updated_at_date.'<br />'.$updated_at_time;
+                        $updated_at_date = implode('.',array_reverse(explode('-',$updated_at[0])));
+                        $updated_at_time = explode(':',$updated_at[1]);
+                        echo $updated_at_date.' - '.$updated_at_time[0].':'.$updated_at_time[1];
                         ?>
                     </div>
                     <?php
                     if($ect!=0) {
                         ?>
-                        <div>Estimated completion time:<br /><?php echo $ect_days.' days, '.$ect_hours.' hours, '.$ect_minutes.' minutes';?></div>
+                        <div><span class="glyphicon glyphicon-bullhorn"></span> <?php echo (($ect_days!=0) ? $ect_days.' days, ' : '').(($ect_hours!=0) ? $ect_hours.' hours, ' : '').(($ect_minutes!=0) ? $ect_minutes.' minutes' : '');?></div>
                         <?php
                     }
                     ?>
-                    <div>Time spent:<br /><?php echo $days.' days, '.$hours.' hours, '.$minutes.' minutes';?></div>
+                    <div><span class="glyphicon glyphicon-time"></span> <?php echo (($days!=0) ? $days.' days, ' : '').(($hours!=0) ? $hours.' hours, ' : '').(($minutes!=0) ? $minutes.' minutes' : '');?></div>
+                    <?php echo anchor('tasks/unfinish/'.$task->id,'Reopen','class="btn btn-warning btn-block"');?>
                 </div>
             </div>
+        </div>
+        <hr />
                 <?php
             }
 

@@ -51,9 +51,9 @@
                 <?php
                 foreach($latest_tasks as $task) :
                     ?>
-                    <tr<?php echo ((date('Y-m-d')>=$task->due) ? ' class="'.((date('Y-m-d')==$task->due) ? 'warning' : 'danger').'"' : '' );?>>
+                    <tr<?php echo ($task->due !== '0000-00-00' && (date('Y-m-d')>=$task->due) ? ' class="'.((date('Y-m-d')==$task->due) ? 'warning' : 'danger').'"' : '' );?>>
                         <td><?php echo anchor('tasks/index/'.$task->project_id, $task->title);?></td>
-                        <td><?php echo $task->due;?></td>
+                        <td><?php echo (($task->due!=='0000-00-00') ? $task->due : 'No due date');?></td>
                     </tr>
                     <?php
                 endforeach;
@@ -65,7 +65,7 @@
         }
         else
         {
-            echo 'No projects started yet...';
+            echo 'No pressing tasks yet...';
         }
         ?>
     </div>
