@@ -31,7 +31,6 @@ class Users extends Auth_Controller
             redirect();
         }
         $this->data['page_title'] = 'Create user';
-        $this->load->library('form_validation');
         $this->form_validation->set_rules('first_name','First name','trim');
         $this->form_validation->set_rules('last_name','Last name','trim');
         $this->form_validation->set_rules('company','Company','trim');
@@ -45,7 +44,6 @@ class Users extends Auth_Controller
         if($this->form_validation->run()===FALSE)
         {
             $this->data['groups'] = $this->ion_auth->groups()->result();
-            $this->load->helper('form');
             $this->render('users/create_view');
         }
         else
@@ -81,7 +79,6 @@ class Users extends Auth_Controller
             redirect('users');
         }
         $this->data['page_title'] = 'Edit user';
-        $this->load->library('form_validation');
 
         $this->form_validation->set_rules('first_name','First name','trim');
         $this->form_validation->set_rules('last_name','Last name','trim');
@@ -114,7 +111,6 @@ class Users extends Auth_Controller
                     $this->data['usergroups'][] = $group->id;
                 }
             }
-            $this->load->helper('form');
             $this->render('users/edit_view');
         }
         else
@@ -153,12 +149,7 @@ class Users extends Auth_Controller
         $user = $this->ion_auth->user()->row();
         $this->data['user'] = $user;
         $this->data['current_user_menu'] = '';
-        if($this->ion_auth->in_group('admin'))
-        {
-            $this->data['current_user_menu'] = $this->load->view('templates/_parts/user_menu_admin_view.php', NULL, TRUE);
-        }
-
-        $this->load->library('form_validation');
+        
         $this->form_validation->set_rules('first_name','First name','trim');
         $this->form_validation->set_rules('last_name','Last name','trim');
         $this->form_validation->set_rules('company','Company','trim');
