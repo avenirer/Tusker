@@ -1897,7 +1897,9 @@ class MY_Model extends CI_Model
     private function _build_sorter($data, $field, $order_by, $sort_by = 'DESC')
     {
         usort($data, function($a, $b) use ($field, $order_by, $sort_by) {
-            return strtoupper($sort_by) ==  "DESC" ? ((isset($a[$field][$order_by]) && isset($b[$field][$order_by])) ? ($a[$field][$order_by] < $b[$field][$order_by]) : -1) : ((isset($a[$field][$order_by]) && isset($b[$field][$order_by])) ? ($a[$field][$order_by] > $b[$field][$order_by]) : -1);
+            $array_a = $this->object_to_array($a[$field]);
+            $array_b = $this->object_to_array($b[$field]);
+            return strtoupper($sort_by) ==  "DESC" ? ((isset($array_a[$order_by]) && isset($array_b[$order_by])) ? ($array_a[$order_by] < $array_b[$order_by]) : -1) : ((isset($array_a[$order_by]) && isset($array_b[$order_by])) ? ($array_a[$order_by] > $array_b[$order_by]) : -1);
         });
 
         return $data;

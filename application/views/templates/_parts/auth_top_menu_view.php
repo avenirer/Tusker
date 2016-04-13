@@ -18,7 +18,9 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><img src="//www.gravatar.com/avatar/<?php echo $_SESSION['gravatar'];?>?s=20" onerror="this.src = '<?php echo base_url().'assets/images/avatar.png';?>';" /> <span class="caret"></span></a>
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                        <span class="glyphicon glyphicon-user"></span>
+                        <!--<img src="//www.gravatar.com/avatar/<?php echo $_SESSION['gravatar'];?>?s=20" onerror="this.src = '<?php echo base_url().'assets/images/avatar.png';?>';" />--> <span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         <li><?php echo anchor('users/profile','Profile');?></li>
                         <li><a href="#">Another action</a></li>

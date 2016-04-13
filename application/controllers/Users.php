@@ -152,11 +152,6 @@ class Users extends Auth_Controller
         $this->data['page_title'] = 'User Profile';
         $user = $this->ion_auth->user()->row();
         $this->data['user'] = $user;
-        $this->data['current_user_menu'] = '';
-        if($this->ion_auth->in_group('admin'))
-        {
-            $this->data['current_user_menu'] = $this->load->view('templates/_parts/user_menu_admin_view.php', NULL, TRUE);
-        }
 
         $this->load->library('form_validation');
         $this->form_validation->set_rules('first_name','First name','trim');

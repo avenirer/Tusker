@@ -11,7 +11,7 @@
 
         <!-- Bootstrap -->
         <link href="<?php echo site_url('assets/css/bootstrap.min.css');?>" rel="stylesheet">
-        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+        <!--<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">-->
         <?php echo $before_closing_head;?>
     </head>
 <body>

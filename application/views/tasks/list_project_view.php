@@ -27,10 +27,10 @@
                 //$ect_seconds = floor(($ect%60));
                 ?>
         <div class="row">
-            <div class="col-lg-8">
+            <div class="col-lg-10">
                 <h3><?php echo $task->title;?></h3>
                 <h4>Task details:</h4>
-                <div class="well well-sm"><?php echo $task->details;?></div>
+                <div class="well well-sm"><?php echo ((strlen($task->details)>0) ? $task->details : 'No details provided');?></div>
                 <?php
                 if(isset($task->history) && !empty($task->history))
                 {
@@ -55,12 +55,19 @@
                 }
                 ?>
             </div>
-            <div class="col-lg-4">
+            <div class="col-lg-2">
                 <div class="well well-sm text-center" style="color: #337ab7;">
-                    <div style="font-size:36px; font-weight:bold;"><?php echo $task->status;?>%</div>
+                    <div style="font-size:18px; font-weight:bold;"><?php echo $task->status;?>%</div>
                     <?php
-                    echo ($task->closed=='1') ? '<span class="glyphicon glyphicon-ok" style="font-size: 56px;"></span>' : '<span class="glyphicon glyphicon-asterisk" style="font-size: 56px;"></span>';?>
-                    <div>Last update:<br /><?php echo $task->updated_at;?></div>
+                    echo ($task->closed=='1') ? '<span class="glyphicon glyphicon-ok" style="font-size: 16px;"></span>' : '<span class="glyphicon glyphicon-asterisk" style="font-size: 16px;"></span>';?>
+                    <div>Last update:<br />
+                        <?php
+                        $updated_at = explode(' ',$task->updated_at);
+                        $updated_at_date = implode('-',array_reverse(explode('-',$updated_at[0])));
+                        $updated_at_time = $updated_at[1];
+                        echo $updated_at_date.'<br />'.$updated_at_time;
+                        ?>
+                    </div>
                     <?php
                     if($ect!=0) {
                         ?>
