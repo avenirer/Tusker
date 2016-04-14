@@ -11,6 +11,7 @@
         .timer_container.active .timer .seconds {font-size:16px; color: #b4ceb4;}
         .add-task {-webkit-transition: all 1s ease-in-out; -moz-transition: all 1s ease-in-out; -o-transition: all 1s ease-in-out; transition: all 1s ease-in-out;}
     </style>
+    <div class="col-lg-12"><h1><?php echo $project->title;?></h1></div>
     <div class="col-lg-12" style="text-align:right">
         <?php echo anchor('projects', 'Back to projects','class="btn btn-primary back-projects"');?>
         <?php echo anchor('tasks/list-project/'.$project->id,'List all tasks','class="btn btn-primary back-projects"');?>
