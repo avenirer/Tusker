@@ -14,6 +14,7 @@
             <ul class="nav navbar-nav">
                 <li><?php echo anchor('','Home');?></li>
                 <li><?php echo anchor('projects','Projects');?></li>
+                <li><?php echo anchor('reports/generate','Generate report');?></li>
                 <li><?php echo anchor('about','About');?></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

@@ -31,24 +31,9 @@
                             getFinished(<?php echo $project->id;?>);
                         }
 
-                        $.ajax({
-                            url: "<?php echo base_url() . 'tasks/add-history/';?>",
-                            type: "post",
-                            dataType: 'json',
-                            data: {"task_id" : taskId, "time_spent" : timeSpent, "status" : taskStatus, "comment" : "Changed task status to " + taskStatus + "%"},
-                            cache: false,
-                            success: function (json) {
-                                $("#add-comment textarea").val('');
-                                $(".history", taskHistory).html(json.history);
-                            },
-                            error: function (xhr, desc, err) {
-                                console.log("not ok");
-                                console.log(xhr);
-                                var message = desc + "\nError:" + err;
-                                console.log(message);
-                            }
-                        }); // end ajax call
+                        var comment = "Changed task status to " + taskStatus + "%";
 
+                        addToHistory(taskId, timeSpent, taskStatus, comment);
 
                         var message = json.message;
                         //console.log(message);
@@ -80,25 +65,12 @@
             var taskHistory = $("#task-history");
             var taskStatus = $("#knob_" + taskId).val();
 
-            $.ajax({
-                url: "<?php echo base_url() . 'tasks/add-history/';?>",
-                type: "post",
-                dataType: 'json',
-                data: {"task_id" : taskId, "time_spent" : timeSpent, "status" : taskStatus, "comment" : "Started work on task"},
-                cache: false,
-                success: function (json) {
-                    $("#add-comment textarea").val('');
-                    $(".history", taskHistory).html(json.history);
-                    $("input[type=hidden]", taskHistory).val(taskId);
-                    $(taskHistory).show("slow");
-                },
-                error: function (xhr, desc, err) {
-                    console.log("not ok");
-                    console.log(xhr);
-                    var message = desc + "\nError:" + err;
-                    console.log(message);
-                }
-            }); // end ajax call
+            var comment = "Started work on task";
+            addToHistory(taskId, timeSpent, taskStatus, comment);
+
+            $("#add-comment textarea").val('');
+            $("input[type=hidden]", taskHistory).val(taskId);
+            $(taskHistory).show("slow");
 
             $(timer).addClass("active");
             $(".stop",timer).show();
@@ -125,23 +97,9 @@
             var taskStatus = $("#knob_" + taskId).val();
             var taskHistory = $("#task-history");
 
-            $.ajax({
-                url: "<?php echo base_url() . 'tasks/add-history/';?>",
-                type: "post",
-                dataType: 'json',
-                data: {"task_id" : taskId, "time_spent" : timeSpent, "status" : taskStatus, "comment" : comment},
-                cache: false,
-                success: function (json) {
-                    $("#add-comment textarea").val('');
-                    $(".history", taskHistory).html(json.history);
-                },
-                error: function (xhr, desc, err) {
-                    console.log("not ok");
-                    console.log(xhr);
-                    var message = desc + "\nError:" + err;
-                    console.log(message);
-                }
-            }); // end ajax call
+            addToHistory(taskId, timeSpent, taskStatus, comment);
+            $("#add-comment textarea").val('');
+            $(".history", taskHistory).html(json.history);
             e.preventDefault();
         });
         
@@ -176,30 +134,18 @@
                 }
             }); // end ajax call
 
-            $.ajax({
-                url: "<?php echo base_url() . 'tasks/add-history/';?>",
-                type: "post",
-                dataType: 'json',
-                data: {"task_id" : taskId, "time_spent" : timeSpent, "status" : taskStatus, "comment" : "Stopped work at task"},
-                cache: false,
-                success: function (json) {
-                    //$("#add-comment textarea").val('');
-                    //$(".history", taskHistory).html(json.history);
-                },
-                error: function (xhr, desc, err) {
-                    console.log("not ok");
-                    console.log(xhr);
-                    var message = desc + "\nError:" + err;
-                    console.log(message);
-                }
-            }); // end ajax call
-
+            var comment = ($(this).hasClass("finished") ? "Finished" : "Stopped") + " work at task";
+            addToHistory(taskId, timeSpent, taskStatus, comment);
 
             if($(this).hasClass("finished"))
             {
                 $(timerElement).parents("tr").hide();
                 getFinished(<?php echo $project->id;?>);
             }
+
+
+
+
             $(".stop, .finished").hide();
             $(".start").show();
             $(this).parents("tr").removeClass("warning");
@@ -225,10 +171,10 @@
         if(stopTimer==false){
             now = new Date();
             difference = (now-countFrom);
-            days=Math.floor(difference/(60*60*1000*24)*1);
-            hours=Math.floor((difference%(60*60*1000*24))/(60*60*1000)*1);
-            mins=Math.floor(((difference%(60*60*1000*24))%(60*60*1000))/(60*1000)*1);
-            secs=Math.floor((((difference%(60*60*1000*24))%(60*60*1000))%(60*1000))/1000*1);
+            days=Math.floor(difference/(60*60*1000*24));
+            hours=Math.floor((difference%(60*60*1000*24))/(60*60*1000));
+            mins=Math.floor(((difference%(60*60*1000*24))%(60*60*1000))/(60*1000));
+            secs=Math.floor((((difference%(60*60*1000*24))%(60*60*1000))%(60*1000))/1000);
 
             var timer = $(timerElement);
             $(".days",timer).text(days);
@@ -239,6 +185,30 @@
             upTime.to=setTimeout(function(){ upTime(countFrom,timerElement); },1000);
         }
 
+
+    }
+
+    function addToHistory(taskId, timeSpent, taskStatus, comment)
+    {
+        var taskHistory = $("#task-history");
+        $.ajax({
+            url: "<?php echo base_url() . 'tasks/add-history/';?>",
+            type: "post",
+            dataType: 'json',
+            data: {"task_id" : taskId, "time_spent" : timeSpent, "status" : taskStatus, "comment" : comment},
+            cache: false,
+            success: function (json) {
+                $(".history", taskHistory).html(json.history);
+                return true;
+            },
+            error: function (xhr, desc, err) {
+                console.log("not ok");
+                console.log(xhr);
+                var message = desc + "\nError:" + err;
+                console.log(message);
+                return false;
+            }
+        });
 
     }
     
