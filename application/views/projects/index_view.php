@@ -9,24 +9,24 @@
                 if($opened_projects)
                 {
 
-                    foreach($opened_projects as $project)
+                    foreach($opened_projects as $project_id => $project)
                     {
                         $open_tasks = 0;
                         $closed_tasks = 0;
                         $open_time_spent = 0;
                         $closed_time_spent = 0;
-                        if(!empty($project->tasks))
+                        if(!empty($project['tasks']))
                         {
-                            foreach($project->tasks as $task)
+                            foreach($project['tasks'] as $task)
                             {
-                                $open_closed = ($task->closed=='0') ? 'open' : 'closed';
+                                $open_closed = ($task['closed']==='0') ? 'open' : 'closed';
                                 ${$open_closed.'_tasks'} += 1;
-                                ${$open_closed.'_time_spent'} += $task->time_spent;
+                                ${$open_closed.'_time_spent'} += $task['time_spent'];
                             }
                         }
                         echo '<tr>';
-                        echo '<td>'.anchor('tasks/index/'.$project->id,$project->title).'</td>';
-                        echo '<td>'.$open_tasks.'/'.$closed_tasks.' '.anchor('tasks/index/'.$project->id,'<span class="glyphicon glyphicon-list" data-toggle="tooltip" data-placement="top" title="View tasks"></span>').'</td>';
+                        echo '<td>'.anchor('tasks/index/'.$project_id,$project['title']).'</td>';
+                        echo '<td>'.$open_tasks.'/'.$closed_tasks.' '.anchor('tasks/index/'.$project_id,'<span class="glyphicon glyphicon-list" data-toggle="tooltip" data-placement="top" title="View tasks"></span>').'</td>';
                         $days = floor($open_time_spent/86400);
                         $hours = floor(($open_time_spent%86400)/3600);
                         $minutes = floor(($open_time_spent%3600)/60);
@@ -35,13 +35,13 @@
                         $c_hours = floor(($closed_time_spent%86400)/3600);
                         $c_minutes = floor(($closed_time_spent%3600)/60);
                         echo (($c_days>0) ? $c_days.'d ' : '').(($c_hours>0) ? $c_hours.'h ' : '').$c_minutes.'m</td>';
-                        echo '<td>'.(($project->due!=='0000-00-00') ?  implode('-', array_reverse(explode('-',$project->due))) : 'No due date').'</td>';
+                        echo '<td>'.(($project['due_date']!=='0000-00-00') ?  implode('-', array_reverse(explode('-',$project['due_date']))) : 'No due date').'</td>';
                         echo '<td>';
                         //echo anchor('tasks/index/'.$project->id,'Tasks','class="btn btn-xs btn-primary"');
-                        echo ' '.anchor('tasks/create/'.$project->id,'<span class="glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="top" title="Add task"></span>','');
+                        echo ' '.anchor('tasks/create/'.$project_id,'<span class="glyphicon glyphicon-plus" data-toggle="tooltip" data-placement="top" title="Add task"></span>','');
                         echo '</td>';
                         echo '<td style="text-align:right;">';
-                        echo anchor('projects/status/'.$project->id,'<span class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="top" title="Close project"></span>','');
+                        echo anchor('projects/status/'.$project_id,'<span class="glyphicon glyphicon-remove" data-toggle="tooltip" data-placement="top" title="Close project"></span>','');
                         echo '</td>';
                         echo '</tr>';
                     }
@@ -58,28 +58,28 @@
             if($closed_projects)
             {
 
-                foreach($closed_projects as $project)
+                foreach($closed_projects as $project_id => $project)
                 {
                     $closed_tasks = 0;
                     $closed_time_spent = 0;
-                    if(!empty($project->tasks))
+                    if(!empty($project['tasks']))
                     {
-                        foreach($project->tasks as $task)
+                        foreach($project['tasks'] as $task)
                         {
                             $closed_tasks += 1;
-                            $closed_time_spent += $task->time_spent;
+                            $closed_time_spent += $task['time_spent'];
                         }
                     }
                     echo '<tr>';
-                    echo '<td>'.anchor('tasks/index/'.$project->id,$project->title).'</td>';
+                    echo '<td>'.anchor('tasks/index/'.$project_id,$project['title']).'</td>';
                     echo '<td>'.$closed_tasks.'</td>';
                     $days = floor($closed_time_spent/86400);
                     $hours = floor(($closed_time_spent%86400)/3600);
                     $minutes = floor(($closed_time_spent%3600)/60);
                     echo '<td>'.$days.'d '.$hours.'h '.$minutes.'m</td>';
-                    echo '<td>'.implode('-', array_reverse(explode('-',explode(' ',$project->updated_at)[0]))).'</td>';
+                    echo '<td>'.implode('-', array_reverse(explode('-',explode(' ',$project['updated_at'])[0]))).'</td>';
                     echo '<td style="text-align:right;">';
-                    echo anchor('projects/status/'.$project->id,'<span class="glyphicon glyphicon-fire" data-toggle="tooltip" data-placement="top" title="Open project"></span>','');
+                    echo anchor('projects/status/'.$project_id,'<span class="glyphicon glyphicon-fire" data-toggle="tooltip" data-placement="top" title="Open project"></span>','');
                     echo '</td>';
                     echo '</tr>';
                 }

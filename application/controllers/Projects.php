@@ -12,9 +12,13 @@ class Projects extends Auth_Controller
 
     public function index()
     {
-        $this->data['opened_projects'] = $this->project_model->where(['user_id'=>$_SESSION['user_id'],'closed'=>'0'])->with_tasks('fields:time_spent,closed')->order_by('updated_at,created_at', 'desc')->get_all();
+        //$this->data['opened_projects'] = $this->project_model->where(['user_id'=>$_SESSION['user_id'],'closed'=>'0'])->with_tasks('fields:time_spent,closed')->order_by('updated_at,created_at', 'desc')->get_all();
+        
+        $this->data['opened_projects'] = $this->project_model->get_user_projects(NULL, 0, ['time_spent','closed']);
 
         $this->data['closed_projects'] = $this->project_model->where(['user_id'=>$_SESSION['user_id'],'closed'=>'1'])->with_tasks('fields:time_spent,closed')->order_by('updated_at,created_at', 'desc')->get_all();
+
+        $this->data['closed_projects'] = $this->project_model->get_user_projects(NULL, 1, ['time_spent','closed']);
 
         $this->form_validation->set_rules('title','Title','trim|required');
         $this->form_validation->set_rules('due','Due date','trim');

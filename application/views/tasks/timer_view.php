@@ -8,6 +8,14 @@
             'release' : function (v) {
                 var taskId = $(this.i).attr("id").substr(5);
                 var taskStatus = v;
+                var timerElement = "#countup" + taskId;
+                var timer = $(timerElement);
+                var seconds = parseInt($(".seconds",timer).text());
+                var minutes = parseInt($(".minutes",timer).text());
+                var hours = parseInt($(".hours",timer).text());
+                var days = parseInt($(".days",timer).text());
+                var timeSpent = seconds + (minutes*60) + (hours*3600) + (days*86400);
+                var taskHistory = $("#task-history");
                 $.ajax({
                     url: "<?php echo base_url() . 'tasks/update-status';?>",
                     type: "post",
@@ -22,6 +30,26 @@
                             $(timerElement).parents("tr").hide();
                             getFinished(<?php echo $project->id;?>);
                         }
+
+                        $.ajax({
+                            url: "<?php echo base_url() . 'tasks/add-history/';?>",
+                            type: "post",
+                            dataType: 'json',
+                            data: {"task_id" : taskId, "time_spent" : timeSpent, "status" : taskStatus, "comment" : "Changed task status to " + taskStatus + "%"},
+                            cache: false,
+                            success: function (json) {
+                                $("#add-comment textarea").val('');
+                                $(".history", taskHistory).html(json.history);
+                            },
+                            error: function (xhr, desc, err) {
+                                console.log("not ok");
+                                console.log(xhr);
+                                var message = desc + "\nError:" + err;
+                                console.log(message);
+                            }
+                        }); // end ajax call
+
+
                         var message = json.message;
                         //console.log(message);
                     },
@@ -42,15 +70,24 @@
             $(this).parents("tr").addClass("warning");
             $(".back-projects, .add-task, .edit-task, a.not-finished").hide("slow");
             taskId = $(this).data("target");
+            var timerElement = "#countup" + taskId;
+            var timer = $(timerElement);
+            var seconds = parseInt($(".seconds",timer).text());
+            var minutes = parseInt($(".minutes",timer).text());
+            var hours = parseInt($(".hours",timer).text());
+            var days = parseInt($(".days",timer).text());
+            var timeSpent = seconds + (minutes*60) + (hours*3600) + (days*86400);
+            var taskHistory = $("#task-history");
+            var taskStatus = $("#knob_" + taskId).val();
 
             $.ajax({
-                url: "<?php echo base_url() . 'tasks/task-history/';?>",
+                url: "<?php echo base_url() . 'tasks/add-history/';?>",
                 type: "post",
                 dataType: 'json',
-                data: {"task_id": taskId},
+                data: {"task_id" : taskId, "time_spent" : timeSpent, "status" : taskStatus, "comment" : "Started work on task"},
                 cache: false,
                 success: function (json) {
-                    var taskHistory = $("#task-history");
+                    $("#add-comment textarea").val('');
                     $(".history", taskHistory).html(json.history);
                     $("input[type=hidden]", taskHistory).val(taskId);
                     $(taskHistory).show("slow");
@@ -63,15 +100,9 @@
                 }
             }); // end ajax call
 
-            var timerElement = "#countup" + taskId;
-            var timer = $(timerElement);
             $(timer).addClass("active");
             $(".stop",timer).show();
             $(".finished",timer).show();
-            var seconds = parseInt($(".seconds",timer).text());
-            var minutes = parseInt($(".minutes",timer).text());
-            var hours = parseInt($(".hours",timer).text());
-            var days = parseInt($(".days",timer).text());
             stopTimer = false;
             var loadTime = new Date();
             loadTime.setDate(loadTime.getDate()-days);
@@ -133,8 +164,27 @@
                 data: {"task_id": taskId, "time_spent": timeSpent, "status" : taskStatus},
                 cache: false,
                 success: function (json) {
+
                     var message = json.message;
                     //console.log(message);
+                },
+                error: function (xhr, desc, err) {
+                    console.log("not ok");
+                    console.log(xhr);
+                    var message = desc + "\nError:" + err;
+                    console.log(message);
+                }
+            }); // end ajax call
+
+            $.ajax({
+                url: "<?php echo base_url() . 'tasks/add-history/';?>",
+                type: "post",
+                dataType: 'json',
+                data: {"task_id" : taskId, "time_spent" : timeSpent, "status" : taskStatus, "comment" : "Stopped work at task"},
+                cache: false,
+                success: function (json) {
+                    //$("#add-comment textarea").val('');
+                    //$(".history", taskHistory).html(json.history);
                 },
                 error: function (xhr, desc, err) {
                     console.log("not ok");
