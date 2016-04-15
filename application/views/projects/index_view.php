@@ -3,7 +3,7 @@
     <div class="col-lg-8">
         <h2>Opened projects</h2>
         <table class="table table-striped table-condensed">
-            <thead><tr><th>Project name</th><th>Opened</th><th>Time spent</th><th>Closed</th><th>Time spent</th><th>Due</th><th>&nbsp;</th><th>&nbsp;</th></tr></thead>
+            <thead><tr><th>Project name</th><th>Tasks(o/c)<th>Time spent (o/c)</th><th>Due</th><th>&nbsp;</th><th>&nbsp;</th></tr></thead>
             <tbody>
                 <?php
                 if($opened_projects)
@@ -26,16 +26,15 @@
                         }
                         echo '<tr>';
                         echo '<td>'.anchor('tasks/index/'.$project->id,$project->title).'</td>';
-                        echo '<td>'.$open_tasks.'</td>';
+                        echo '<td>'.$open_tasks.'/'.$closed_tasks.' '.anchor('tasks/index/'.$project->id,'<span class="glyphicon glyphicon-list" data-toggle="tooltip" data-placement="top" title="View tasks"></span>').'</td>';
                         $days = floor($open_time_spent/86400);
                         $hours = floor(($open_time_spent%86400)/3600);
                         $minutes = floor(($open_time_spent%3600)/60);
-                        echo '<td>'.$days.'d '.$hours.'h '.$minutes.'m</td>';
-                        echo '<td>'.$closed_tasks.'</td>';
-                        $days = floor($closed_time_spent/86400);
-                        $hours = floor(($closed_time_spent%86400)/3600);
-                        $minutes = floor(($closed_time_spent%3600)/60);
-                        echo '<td>'.$days.'d '.$hours.'h '.$minutes.'m</td>';
+                        echo '<td>'.(($days>0) ? $days.'d ' : '').(($hours>0) ? $hours.'h ' : '').$minutes.'m / ';
+                        $c_days = floor($closed_time_spent/86400);
+                        $c_hours = floor(($closed_time_spent%86400)/3600);
+                        $c_minutes = floor(($closed_time_spent%3600)/60);
+                        echo (($c_days>0) ? $c_days.'d ' : '').(($c_hours>0) ? $c_hours.'h ' : '').$c_minutes.'m</td>';
                         echo '<td>'.(($project->due!=='0000-00-00') ?  implode('-', array_reverse(explode('-',$project->due))) : 'No due date').'</td>';
                         echo '<td>';
                         //echo anchor('tasks/index/'.$project->id,'Tasks','class="btn btn-xs btn-primary"');

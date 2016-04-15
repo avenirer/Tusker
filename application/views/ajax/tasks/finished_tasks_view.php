@@ -16,7 +16,7 @@
             <tr>
                 <td>
                     <div>
-                        <?php echo $task->title;?> (ECT: ...)
+                        <?php echo $task->title;?> (Time spent: <?php echo (($days>0) ? $days.' days, ' : '').(($hours>0) ? $hours.' hours, ' : '').$minutes.' minutes';?>)
                         <div style="text-align:right;"><a href="<?php echo base_url().'tasks/unfinish/'.$task->id;?>" class="not-finished btn btn-warning btn-sm" data-target="<?php echo $task->id;?>">Not really finished...</a> <?php echo anchor('#','Details','class="btn btn-primary btn-sm details" data-target="'.$task->id.'"');?></div>
                     </div>
                     <div class="details-show" style="display:none;">
