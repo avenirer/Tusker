@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost:3306
--- Generation Time: Apr 08, 2016 at 10:48 AM
+-- Generation Time: Apr 18, 2016 at 08:40 AM
 -- Server version: 5.5.42
 -- PHP Version: 7.0.0
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `tusker`
 --
+CREATE DATABASE IF NOT EXISTS `tusker` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `tusker`;
 
 -- --------------------------------------------------------
 
@@ -49,6 +51,7 @@ CREATE TABLE `ci_sessions` (
   `timestamp` int(10) unsigned NOT NULL DEFAULT '0',
   `data` blob NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 
 -- --------------------------------------------------------
@@ -102,7 +105,27 @@ CREATE TABLE `projects` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(10) unsigned DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
+
+
+--
+-- Table structure for table `projects_users`
+--
+
+CREATE TABLE `projects_users` (
+  `id` int(11) NOT NULL,
+  `user_id` int(10) unsigned NOT NULL,
+  `project_id` int(10) unsigned NOT NULL,
+  `created_at` datetime DEFAULT NULL,
+  `created_by` int(10) unsigned DEFAULT NULL,
+  `updated_at` datetime DEFAULT NULL,
+  `updated_by` int(10) unsigned DEFAULT NULL,
+  `deleted_at` datetime DEFAULT NULL,
+  `deleted_by` int(10) unsigned DEFAULT NULL,
+  `access_type` tinyint(1) unsigned NOT NULL DEFAULT '1'
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8;
+
 
 
 -- --------------------------------------------------------
@@ -117,7 +140,8 @@ CREATE TABLE `rat` (
   `date_time` datetime DEFAULT NULL,
   `code` int(11) DEFAULT NULL,
   `message` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
+
 
 
 -- --------------------------------------------------------
@@ -143,7 +167,9 @@ CREATE TABLE `tasks` (
   `updated_by` int(10) unsigned DEFAULT NULL,
   `deleted_at` datetime DEFAULT NULL,
   `deleted_by` int(10) unsigned DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+
 
 -- --------------------------------------------------------
 
@@ -164,7 +190,8 @@ CREATE TABLE `task_histories` (
   `deleted_by` int(10) unsigned DEFAULT NULL,
   `status` tinyint(3) unsigned DEFAULT NULL,
   `time_spent` int(11) unsigned DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=85 DEFAULT CHARSET=utf8;
+
 
 -- --------------------------------------------------------
 
@@ -197,7 +224,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'gtbuLmffMbIAevpNfUYwfe', 1268889823, 1460099947, 1, 'Admin', 'istrator', '', '');
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'gtbuLmffMbIAevpNfUYwfe', 1268889823, 1460725009, 1, 'Admin', 'istrator', '', '');
 
 -- --------------------------------------------------------
 
@@ -218,7 +245,6 @@ CREATE TABLE `users_groups` (
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 (1, 1, 1),
 (2, 1, 2),
-(11, 5, 2);
 
 -- --------------------------------------------------------
 
@@ -278,6 +304,12 @@ ALTER TABLE `projects`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `projects_users`
+--
+ALTER TABLE `projects_users`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `rat`
 --
 ALTER TABLE `rat`
@@ -333,22 +365,27 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `projects`
 --
 ALTER TABLE `projects`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+--
+-- AUTO_INCREMENT for table `projects_users`
+--
+ALTER TABLE `projects_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
 --
 -- AUTO_INCREMENT for table `rat`
 --
 ALTER TABLE `rat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=48;
 --
 -- AUTO_INCREMENT for table `tasks`
 --
 ALTER TABLE `tasks`
-  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=12;
+  MODIFY `id` int(10) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT for table `task_histories`
 --
 ALTER TABLE `task_histories`
-  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
+  MODIFY `id` int(11) unsigned NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=85;
 --
 -- AUTO_INCREMENT for table `users`
 --
