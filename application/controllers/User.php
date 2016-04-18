@@ -21,14 +21,11 @@ class User extends MY_Controller {
     public function login()
     {
         $this->data['title'] = "Login";
-
-        $this->load->library('form_validation');
         $this->form_validation->set_rules('username', 'Username', 'trim|required');
         $this->form_validation->set_rules('password', 'Password', 'trim|required');
         $this->form_validation->set_rules('ajax','AJAX','trim|is_natural');
         if ($this->form_validation->run() === FALSE)
         {
-            $this->load->helper('form');
             $this->render('user/login_view');
         }
         else
@@ -36,12 +33,12 @@ class User extends MY_Controller {
             $remember = (bool) $this->input->post('remember');
             $username = $this->input->post('username');
             $password = $this->input->post('password');
-            $this->ion_auth->set_hook('post_login_successful', 'get_gravatar_hash', $this, '_gravatar', array());
+            //$this->ion_auth->set_hook('post_login_successful', 'get_gravatar_hash', $this, '_gravatar', array());
 
             if ($this->ion_auth->login($username, $password, $remember))
             {
-                $this->load->library('rat');
-                $this->rat->log('User logged in',1);
+                //$this->load->library('rat');
+                //$this->rat->log('User logged in',1);
                 redirect('');
             }
             else
@@ -100,8 +97,8 @@ class User extends MY_Controller {
 
     public function logout()
     {
-        $this->load->library('rat');
-        $this->rat->log('User logged out',1);
+        //$this->load->library('rat');
+        //$this->rat->log('User logged out',1);
         $this->ion_auth->logout();
         redirect('user/login');
     }

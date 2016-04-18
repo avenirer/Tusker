@@ -20,14 +20,22 @@ class Tasks extends Auth_Controller
             $this->postal->add('The project doesn\'t exist','error');
             redirect('projects');
         }
-        $project = $this->project_model->where('user_id',$this->current_user->id)->with_tasks('fields:id,title,ect,due,time_spent,details,status,closed|order_inside:updated_at DESC|where:`closed`=\'0\'')->get($project_id);
-        if($project===FALSE)
+        $rights = $this->project_model->get_user_rights($project_id);
+        if($rights === FALSE)
         {
+            $this->postal->add('You don\'t have the right to view project','error');
             redirect('projects');
         }
-        $this->data['project'] = $project;
-        $this->data['before_closing_body'] = $this->load->view('tasks/timer_view.php',$this->data,TRUE);
-        $this->render('tasks/index_view');
+        else {
+            $project = $this->project_model->with_tasks('fields:id,title,ect,due,time_spent,details,status,closed|order_inside:updated_at DESC|where:`closed`=\'0\'')->get($project_id);
+            if ($project === FALSE) {
+                redirect('projects');
+            }
+            $this->data['rights'] = $rights;
+            $this->data['project'] = $project;
+            $this->data['before_closing_body'] = $this->load->view('tasks/timer_view.php', $this->data, TRUE);
+            $this->render('tasks/index_view');
+        }
     }
 
     public function list_project($project_id = NULL)

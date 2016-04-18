@@ -14,6 +14,39 @@ class Project_model extends MY_Model
         $this->has_many_pivot['users'] = array('foreign_model'=>'User_model','pivot_table'=>'projects_users','local_key'=>'id','pivot_local_key'=>'project_id','pivot_foreign_key'=>'user_id', 'foreign_key'=>'id', 'get_relate'=>FALSE);
     }
 
+    public function get_user_rights($project_id,$user_id = NULL)
+    {
+        $this->db->select('projects_users.role');
+        if(!isset($user_id))
+        {
+            $user_id = $_SESSION['user_id'];
+        }
+        elseif(is_numeric($user_id) && $this->ion_auth->is_admin())
+        {
+            $user_id = $user_id;
+        }
+        else
+        {
+            return FALSE;
+        }
+        if(isset($user_id)) {
+            $this->db->where('projects_users.user_id', $user_id);
+        }
+        $this->db->join('projects_users','projects.id = projects_users.project_id');
+        $this->db->where('projects.id',$project_id);
+        $query = $this->db->get('projects');
+
+        if($query->num_rows()>0)
+        {
+            $result = $query->result_array();
+            return explode('_',$result[0]['role']);
+        }
+        else
+        {
+            return FALSE;
+        }
+    }
+
     /**
      * get_user_projects() retrieves all projects that the user is part of. If you want to retrieve projects of another user you need to be in admin group.
      * @param null $user_id
@@ -34,10 +67,10 @@ class Project_model extends MY_Model
         }
         else
         {
-            $user_id = NULL;
+            return FALSE;
         }
         if(isset($user_id)) {
-            $this->db->where('users.id', $user_id);
+            $this->db->where('projects_users.user_id', $user_id);
         }
         if(isset($closed))
         {

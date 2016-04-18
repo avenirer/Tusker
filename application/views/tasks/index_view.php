@@ -65,84 +65,94 @@
             </tbody>
         </table>
     </div>
-    <div class="col-lg-5">
-        <div class="add-task">
-            <h2>Add task</h2>
-            <div class="row">
-                <?php
-                echo form_open('tasks/create');
-                ?>
-                <div class="col-lg-12">
-                    <div class="form-group">
-                        <?php
-                        echo form_label('Task title:','title');
-                        echo form_input('title',set_value('title'),'class="form-control"');
-                        ?>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <?php echo form_label('Estimated completion time (ECT):');?>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <?php echo form_input('ect_days',set_value('ect_days',0),'class="form-control"');?><div class="input-group-addon">days</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <?php echo form_input('ect_hours',set_value('ect_hours',0),'class="form-control"');?><div class="input-group-addon">hours</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-4">
-                    <div class="form-group">
-                        <div class="input-group">
-                            <?php echo form_input('ect_minutes',set_value('ect_minutes',0),'class="form-control"');?><div class="input-group-addon">minutes</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form-group">
-                        <?php
-                        echo form_label('Due date:','due');
-                        echo form_input('due',set_value('due',date('d-m-Y')), 'class="form-control datepick"'.(isset($project->due) ? ' data-date-end-date="'.implode('-', array_reverse(explode('-',$project->due))).'"' : ''));
-                        ?>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <div class="form-group">
-                        <?php
-                        echo form_label('Details:','details');
-                        echo form_textarea(['name'=>'details','rows'=>'5'],set_value('details'),'class="form-control"');
-                        ?>
-                    </div>
-                </div>
-                <div class="col-lg-12">
+    <?php
+    if(in_array('w',$rights) || in_array('w+',$rights)) {
+        ?>
+        <div class="col-lg-5">
+            <div class="add-task">
+                <h2>Add task</h2>
+                <div class="row">
                     <?php
-                    echo form_hidden('project_id',$project->id);
-                    echo form_submit('','Create new task','class="btn btn-small btn-primary"');
+                    echo form_open('tasks/create');
+                    ?>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <?php
+                            echo form_label('Task title:', 'title');
+                            echo form_input('title', set_value('title'), 'class="form-control"');
+                            ?>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <?php echo form_label('Estimated completion time (ECT):'); ?>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <?php echo form_input('ect_days', set_value('ect_days', 0), 'class="form-control"'); ?>
+                                <div class="input-group-addon">days</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <?php echo form_input('ect_hours', set_value('ect_hours', 0), 'class="form-control"'); ?>
+                                <div class="input-group-addon">hours</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <?php echo form_input('ect_minutes', set_value('ect_minutes', 0), 'class="form-control"'); ?>
+                                <div class="input-group-addon">minutes</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <?php
+                            echo form_label('Due date:', 'due');
+                            echo form_input('due', set_value('due', date('d-m-Y')), 'class="form-control datepick"' . (isset($project->due) ? ' data-date-end-date="' . implode('-', array_reverse(explode('-', $project->due))) . '"' : ''));
+                            ?>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <?php
+                            echo form_label('Details:', 'details');
+                            echo form_textarea(['name' => 'details', 'rows' => '5'], set_value('details'), 'class="form-control"');
+                            ?>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <?php
+                        echo form_hidden('project_id', $project->id);
+                        echo form_submit('', 'Create new task', 'class="btn btn-small btn-primary"');
+                        ?>
+                    </div>
+                    <?php
+                    echo form_close();
                     ?>
                 </div>
-                <?php
-                    echo form_close();
-                ?>
+            </div>
+            <div id="task-history" style="display:none;">
+                <h2>Task history</h2>
+                <?php echo form_open('#', 'id="add-comment"', ['task_id' => '']); ?>
+                <div class="form-group">
+                    <?php echo form_label('Add comment', 'comment'); ?>
+                    <?php echo form_textarea(['name' => 'comment', 'rows' => '5'], '', 'class="form-control"'); ?>
+                    <?php /* echo form_hidden('task_id','');*/
+                    ?>
+                </div>
+                <?php echo form_submit('', 'Save comment', 'class="btn btn-small btn-primary btn-block"'); ?>
+                <div class="history"></div>
             </div>
         </div>
-        <div id="task-history" style="display:none;">
-            <h2>Task history</h2>
-            <?php echo form_open('#','id="add-comment"',['task_id'=>'']);?>
-            <div class="form-group">
-                <?php echo form_label('Add comment','comment');?>
-                <?php echo form_textarea(['name'=>'comment','rows'=>'5'],'','class="form-control"');?>
-                <?php /* echo form_hidden('task_id','');*/?>
-            </div>
-            <?php echo form_submit('','Save comment','class="btn btn-small btn-primary btn-block"');?>
-            <div class="history"></div>
-        </div>
-    </div>
+        <?php
+    }
+    ?>
     <div class="col-lg-12">
         <h2>Closed tasks</h2>
         <div class="finished-tasks">

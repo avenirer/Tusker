@@ -3,7 +3,7 @@
     <div class="col-lg-6">
         <h2>Latest projects</h2>
         <?php
-        if($latest_projects)
+        if($opened_projects)
         {
         ?>
         <table class="table table-striped table-condensed">
@@ -14,12 +14,26 @@
             </thead>
             <tbody>
             <?php
-            foreach($latest_projects as $project) :
+            foreach($opened_projects as $project_id => $project) :
             ?>
-                <tr<?php echo ($project->due !== '0000-00-00' && (date('Y-m-d')>=$project->due) ? ' class="'.((date('Y-m-d')==$project->due) ? 'warning' : 'danger').'"' : '' );?>>
-                    <td><?php echo anchor('tasks/index/'.$project->id, $project->title);?></td>
-                    <td><?php echo (($project->due!=='0000-00-00') ? $project->due : 'No due date');?></td>
-                    <td><?php echo (!empty($project->tasks)) ? $project->tasks[0]->counted_rows : '0';?></td>
+                <tr<?php echo ($project['due_date'] !== '0000-00-00' && (date('Y-m-d')>=$project['due_date']) ? ' class="'.((date('Y-m-d')==$project['due_date']) ? 'warning' : 'danger').'"' : '' );?>>
+                    <td><?php echo anchor('tasks/index/'.$project_id, $project['title']);?></td>
+                    <td><?php echo (($project['due_date']!=='0000-00-00') ? $project['due_date'] : 'No due date');?></td>
+                    <td><?php
+                        $unfinished_tasks = 0;
+                        if(!empty($project['tasks']))
+                        {
+                            foreach($project['tasks'] as $task)
+                            {
+                                if($task['closed']=='0')
+                                {
+                                    $unfinished_tasks++;
+                                }
+                            }
+                        }
+                        echo $unfinished_tasks;
+                        ?>
+                    </td>
                 </tr>
             <?php
             endforeach;

@@ -25,7 +25,7 @@
                             }
                         }
                         echo '<tr>';
-                        echo '<td>'.anchor('tasks/index/'.$project_id,$project['title']).'</td>';
+                        echo '<td>'.anchor('projects/details/'.$project_id,$project['title']).'</td>';
                         echo '<td>'.$open_tasks.'/'.$closed_tasks.' '.anchor('tasks/index/'.$project_id,'<span class="glyphicon glyphicon-list" data-toggle="tooltip" data-placement="top" title="View tasks"></span>').'</td>';
                         $days = floor($open_time_spent/86400);
                         $hours = floor(($open_time_spent%86400)/3600);
@@ -90,7 +90,7 @@
         </table>
     </div>
     <div class="col-lg-4">
-        <?php echo form_open();?>
+        <?php echo form_open('projects/create');?>
         <div class="form-group">
             <?php
             echo form_label('Project title:','title');
@@ -101,6 +101,7 @@
         <div class="form-group">
             <?php
             echo form_label('Due date:','due');
+            echo form_error('due');
             echo form_input('due',set_value('due',date('d-m-Y')), 'class="form-control datepick"');
             ?>
         </div>
