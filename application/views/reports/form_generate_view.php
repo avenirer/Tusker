@@ -35,7 +35,7 @@
     echo form_close();
     ?>
 <?php
-if(isset($work)) {
+if(isset($work) && !empty($work)) {
     ?>
     <div class="col-lg-12"><h3>Activity report</h3>
     <?php

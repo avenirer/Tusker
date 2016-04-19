@@ -54,9 +54,9 @@ class Project_model extends MY_Model
      * @param array $with_tasks - enumerate the fields you want from tasks table. If you want fields to have specific "as" names, you assign keys to array value
      * @return bool
      */
-    public function get_user_projects($user_id = NULL, $closed = NULL, $with_tasks = array())
+    public function get_user_projects($user_id = NULL, $closed = NULL, $with_tasks = array(), $project_id = NULL, $own = FALSE)
     {
-        $this->db->select('projects.id as project_id, projects.title, projects.user_id as project_leader, projects.due as due_date, projects.updated_at');
+        $this->db->select('projects.id as project_id, projects.title as project_title, projects.user_id as project_leader, projects.due as due_date, projects.updated_at');
         if(!isset($user_id))
         {
             $user_id = $_SESSION['user_id'];
@@ -96,7 +96,16 @@ class Project_model extends MY_Model
             }
             $fields = implode(',',$task_fields);
             $this->db->select($fields);
+            if($own===TRUE)
+            {
+                $this->db->where('tasks.user_id',$user_id);
+            }
             $this->db->join('tasks','projects.id = tasks.project_id','left');
+        }
+
+        if(isset($project_id))
+        {
+            $this->db->where('projects.id',$project_id);
         }
         $this->db->join('projects_users','projects.id = projects_users.project_id');
         $this->db->join('users','projects_users.user_id = users.id');
@@ -115,7 +124,8 @@ class Project_model extends MY_Model
                     if(!array_key_exists($row['project_id'],$return_array))
                     {
                         $return_array[$row['project_id']] = array(
-                            'title'=>$row['title'],
+                            'id'=>$row['project_id'],
+                            'title'=>$row['project_title'],
                             'project_leader'=>$row['project_leader'],
                             'due_date' => $row['due_date'],
                             'updated_at' => $row['updated_at'],
@@ -129,7 +139,13 @@ class Project_model extends MY_Model
                     }
 
                 }
-                return $return_array;
+                if(isset($project_id))
+                {
+                    return $return_array[$project_id];
+                }
+                else {
+                    return $return_array;
+                }
             }
         }
         else

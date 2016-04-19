@@ -25,12 +25,14 @@ class Reports extends Auth_Controller
         $this->form_validation->set_rules('end_date','End date','trim');
 
         $projects = $this->project_model->get_user_projects();
+        //print_r($projects);
+        //exit;
         $project_select = array('0'=>'No project selected');
         if($projects)
         {
             foreach($projects as $project)
             {
-                $project_select[$project['project_id']] = $project['title'];
+                $project_select[$project['project_id']] = $project['project_title'];
             }
         }
         $this->data['project_select'] = $project_select;
