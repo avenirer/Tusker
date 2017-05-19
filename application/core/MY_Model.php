@@ -871,7 +871,7 @@ class MY_Model extends CI_Model
                 $sub_select = array();
                 foreach ($fields as $field)
                 {
-                    $sub_select[] = ((strpos($field,'.')===FALSE) ? '`' . $this->_relationships[$requested['request']]['foreign_table'] . '`.`' . trim($field) . '`' : trim($field)).' AS '.$requested['request'].'_'.trim($field);
+                    $sub_select[] = ((strpos($field,'.')===FALSE) ? '' . $this->_relationships[$requested['request']]['foreign_table'] . '.' . trim($field) . '' : trim($field)).' AS '.$requested['request'].'_'.trim($field);
                 }
                 $the_select = implode(',', $sub_select);
 
@@ -1168,7 +1168,7 @@ class MY_Model extends CI_Model
             {
                 $sub_results = $this->{$relation['foreign_model_name']};
                 $select = array();
-                $select[] = '`'.$foreign_table.'`.`'.$foreign_key.'`';
+                $select[] = ''.$foreign_table.'.'.$foreign_key.'';
                 if(!empty($request['parameters']))
                 {
                     if(array_key_exists('fields',$request['parameters']))
@@ -1184,7 +1184,7 @@ class MY_Model extends CI_Model
                             $fields = explode(',', $request['parameters']['fields']);
                             foreach ($fields as $field)
                             {
-                                $select[] = (strpos($field,'.')===FALSE) ? '`' . $foreign_table . '`.`' . trim($field) . '`' : trim($field);
+                                $select[] = (strpos($field,'.')===FALSE) ? '' . $foreign_table . '.' . trim($field) . '' : trim($field);
                             }
                             $the_select = implode(',', $select);
                             $sub_results = (isset($the_select)) ? $sub_results->fields($the_select) : $sub_results;
@@ -1193,7 +1193,7 @@ class MY_Model extends CI_Model
                     }
                     if(array_key_exists('fields',$request['parameters']) && ($request['parameters']['fields']=='*count*'))
                     {
-                        $sub_results->group_by('`' . $foreign_table . '`.`' . $foreign_key . '`');
+                        $sub_results->group_by('' . $foreign_table . '.' . $foreign_key . '');
                     }
                     if(array_key_exists('where',$request['parameters']) || array_key_exists('non_exclusive_where',$request['parameters']))
                     {
@@ -1243,7 +1243,7 @@ class MY_Model extends CI_Model
                     {
                         if($request['parameters']['fields'] == '*count*')
                         {
-                            $this->_database->select('COUNT(`'.$foreign_table.'`.`'.$foreign_key.'`) as counted_rows, `' . $foreign_table . '`.`' . $foreign_key . '`', FALSE);
+                            $this->_database->select('COUNT('.$foreign_table.'.'.$foreign_key.') as counted_rows, ' . $foreign_table . '.' . $foreign_key . '', FALSE);
                         }
                         else
                         {
@@ -1251,7 +1251,7 @@ class MY_Model extends CI_Model
                             $fields = explode(',', $request['parameters']['fields']);
                             $select = array();
                             foreach ($fields as $field) {
-                                $select[] = (strpos($field,'.')===FALSE) ? '`' . $foreign_table . '`.`' . trim($field) . '`' : trim($field);
+                                $select[] = (strpos($field,'.')===FALSE) ? '' . $foreign_table . '.' . trim($field) . '' : trim($field);
                             }
                             $the_select = implode(',', $select);
                             $this->_database->select($the_select);
@@ -1272,7 +1272,7 @@ class MY_Model extends CI_Model
                     $order_inside_str = '';
                     foreach($order_inside_array as $order_by_inside)
                     {
-                        $order_inside_str .= (strpos($order_by_inside[0],',')=== false) ? '`'.$foreign_table.'`.`'.$order_by_inside[0].' '.$order_by_inside[1] : $order_by_inside[0].' '.$order_by_inside[1];
+                        $order_inside_str .= (strpos($order_by_inside[0],',')=== false) ? ''.$foreign_table.'.'.$order_by_inside[0].' '.$order_by_inside[1] : $order_by_inside[0].' '.$order_by_inside[1];
                         $order_inside_str .= ',';
                     }
                     $order_inside_str = rtrim($order_inside_str, ",");
