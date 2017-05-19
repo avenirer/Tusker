@@ -1,3 +1,8 @@
+-- SQLiteDatabaseBrowser 3.9.1 SQL Dump
+-- it is for reference only
+-- you can directly use sqlite database located in ./assets/tusker.db
+-- by enabling the corresponding config option in ./application/config/database.php
+
 BEGIN TRANSACTION;
 
 CREATE TABLE `website` (
