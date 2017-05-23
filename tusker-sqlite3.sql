@@ -8,12 +8,12 @@ BEGIN TRANSACTION;
 CREATE TABLE "banned" (
 	`id`	INTEGER NOT NULL,
 	`ip`	varchar(15) NOT NULL,
-	`created_at`	datetime NOT NULL,
-	`updated_at`	datetime NOT NULL,
-	`deleted_at`	datetime NOT NULL,
-	`created_by`	integer NOT NULL,
-	`updated_by`	integer NOT NULL,
-	`deleted_by`	integer NOT NULL,
+	`created_at`	datetime DEFAULT NULL,
+	`updated_at`	datetime DEFAULT NULL,
+	`deleted_at`	datetime DEFAULT NULL,
+	`created_by`	integer DEFAULT NULL,
+	`updated_by`	integer DEFAULT NULL,
+	`deleted_by`	integer DEFAULT NULL,
 	PRIMARY KEY(id)
 );
 
@@ -149,12 +149,12 @@ INSERT INTO `users_groups` VALUES (1, 1, 1);
 INSERT INTO `users_groups` VALUES (2, 1, 2);
 
 CREATE TABLE "website" (
-  `title` varchar(255) NOT NULL
-,  `page_title` varchar(255) NOT NULL
-,  `status` integer NOT NULL DEFAULT '0'
-,  `admin_email` varchar(200) NOT NULL
-,  `contact_email` varchar(200) NOT NULL
-,  `modified_by` varchar(200) NOT NULL
+  `title` varchar(255) NOT NULL,
+  `page_title` varchar(255) NOT NULL,
+  `status` integer NOT NULL DEFAULT '0',
+  `admin_email` varchar(200) NOT NULL,
+  `contact_email` varchar(200) NOT NULL,
+  `modified_by` varchar(200) DEFAULT NULL
 );
 INSERT INTO `website` VALUES ('Tusker', 'Tusker', 1, 'avenir.ro@gmail.com', 'avenir.ro@gmail.com', '');
 
