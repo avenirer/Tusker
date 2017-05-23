@@ -66,6 +66,7 @@ class User extends MY_Controller {
         $this->form_validation->set_rules('username', 'Username', 'trim|required');
         if($this->form_validation->run() === FALSE)
         {
+            $_SESSION['auth_message'] = 'Please enter your login credentials below so that the system could send you an reset link.';
             $this->render('user/forgot_view');
         }
         else
