@@ -77,7 +77,7 @@ class Master extends Auth_Controller
     {
         $this->load->model('website_model');
         $new_status = ($this->website->status == '1') ? '0' : '1';
-        if($this->website_model->update(array('status'=>$new_status,'modified_by'=>$this->user_id)))
+        if($this->website_model->update(array('status'=>$new_status,'modified_by'=>$this->current_user->id)))
         {
             $this->postal->add('The website is ' . (($new_status == '1') ? 'ONLINE' : 'OFFLINE'),'success');
         }
