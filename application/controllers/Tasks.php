@@ -55,7 +55,7 @@ class Tasks extends Auth_Controller
         //$project = $this->project_model->where('user_id',$this->current_user->id)->with_tasks(array('fields'=>'id,title,ect,due,time_spent,details,status,closed,updated_at', 'order_inside'=>'updated_at DESC', 'with'=>array('relationship'=>'history','fields'=>'comment,created_at','order_inside'=>'created_at DESC')))->get($project_id);
 
 
-        $project = $this->project_model->get_user_projects(NULL, NULL, ['time_spent','closed','ect','title','details','status','updated_at','user_id'],$project_id);
+        $project = $this->project_model->get_user_projects(NULL, NULL, ['time_spent','closed','ect','title','details','status','created_at','updated_at','user_id'],$project_id);
 
         if($project===FALSE)
         {
