@@ -7,7 +7,7 @@
             <div class="col-lg-12">
                 <?php
                 echo '<div class="jumbotron text-center"><p>';
-                echo anchor('dashboard/master/change-website-status','<span class="glyphicon glyphicon-thumbs-'.(($website->status=='1') ? 'up text-primary':'down text-danger').'" style="font-size: 40px;"></span>','onclick="return confirm(\'Are you sure you want to change the status of the site?\')"');
+                echo anchor('master/change-website-status','<span class="glyphicon glyphicon-thumbs-'.(($website->status=='1') ? 'up text-primary':'down text-danger').'" style="font-size: 40px;"></span>','onclick="return confirm(\'Are you sure you want to change the status of the site?\')"');
                 echo '<br />The site is '.(($website->status=='1') ? 'ONLINE':'OFFLINE');
                 echo '</p></div>';
                 ?>
@@ -51,7 +51,7 @@
                                 echo '<tr>';
                                 echo '<td>'.$ip->ip.'</td>';
                                 echo '<td class="text-right">';
-                                echo anchor('dashboard/master/remove-ip/'.$ip->id,'<span class="glyphicon glyphicon-remove"></span>','onclick="return confirm(\'Are you sure you want to un-ban IP?\')"');
+                                echo anchor('master/remove-ip/'.$ip->id,'<span class="glyphicon glyphicon-remove"></span>','onclick="return confirm(\'Are you sure you want to un-ban IP?\')"');
                                 echo '</td>';
                                 echo '</tr>';
                             }
@@ -64,7 +64,7 @@
                     </tbody>
                 </table>
                 <?php
-                echo form_open('dashboard/master/add-ip');
+                echo form_open('master/add-ip');
                 echo '<div class="form-group">';
                 echo form_label('IP','ip');
                 echo form_error('ip');
