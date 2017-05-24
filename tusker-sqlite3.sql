@@ -2,15 +2,14 @@
 -- it is for reference only
 -- you can directly use sqlite database located in ./assets/tusker.db
 -- by enabling the corresponding config option in ./application/config/database.php
-
 BEGIN TRANSACTION;
 
 CREATE TABLE "banned" (
 	`id`	INTEGER NOT NULL,
 	`ip`	varchar(15) NOT NULL,
-	`created_at`	datetime DEFAULT NULL,
-	`updated_at`	datetime DEFAULT NULL,
-	`deleted_at`	datetime DEFAULT NULL,
+	`created_at`	datetime NOT NULL DEFAULT '',
+	`updated_at`	datetime NOT NULL DEFAULT '',
+	`deleted_at`	datetime NOT NULL DEFAULT '',
 	`created_by`	integer DEFAULT NULL,
 	`updated_by`	integer DEFAULT NULL,
 	`deleted_by`	integer DEFAULT NULL,
@@ -48,11 +47,11 @@ CREATE TABLE "projects" (
 	`title`	varchar(255) NOT NULL,
 	`due`	date DEFAULT NULL,
 	`closed`	integer NOT NULL DEFAULT '0',
-	`created_at`	datetime DEFAULT NULL,
+	`created_at`	datetime NOT NULL DEFAULT '',
 	`created_by`	integer DEFAULT NULL,
-	`updated_at`	datetime DEFAULT NULL,
+	`updated_at`	datetime NOT NULL DEFAULT '',
 	`updated_by`	integer DEFAULT NULL,
-	`deleted_at`	datetime DEFAULT NULL,
+	`deleted_at`	datetime NOT NULL DEFAULT '',
 	`deleted_by`	integer DEFAULT NULL,
 	PRIMARY KEY(id)
 );
@@ -63,11 +62,11 @@ CREATE TABLE "projects_users" (
 	`project_id`	integer NOT NULL,
 	`role`	varchar(20) DEFAULT NULL,
 	`status`	integer NOT NULL DEFAULT '0',
-	`created_at`	datetime DEFAULT NULL,
+	`created_at`	datetime NOT NULL DEFAULT '',
 	`created_by`	integer DEFAULT NULL,
-	`updated_at`	datetime DEFAULT NULL,
+	`updated_at`	datetime NOT NULL DEFAULT '',
 	`updated_by`	integer DEFAULT NULL,
-	`deleted_at`	datetime DEFAULT NULL,
+	`deleted_at`	datetime NOT NULL DEFAULT '',
 	`deleted_by`	integer DEFAULT NULL,
 	PRIMARY KEY(id)
 );
@@ -92,11 +91,11 @@ CREATE TABLE "tasks" (
 	`due`	date DEFAULT NULL,
 	`closed`	integer NOT NULL DEFAULT '0',
 	`time_spent`	integer NOT NULL DEFAULT 0,
-	`created_at`	datetime DEFAULT NULL,
+	`created_at`	datetime NOT NULL DEFAULT '',
 	`created_by`	integer DEFAULT NULL,
-	`updated_at`	datetime DEFAULT NULL,
+	`updated_at`	datetime NOT NULL DEFAULT '',
 	`updated_by`	integer DEFAULT NULL,
-	`deleted_at`	datetime DEFAULT NULL,
+	`deleted_at`	datetime NOT NULL DEFAULT '',
 	`deleted_by`	integer DEFAULT NULL,
 	PRIMARY KEY(id)
 );
@@ -106,11 +105,11 @@ CREATE TABLE "task_histories" (
 	`task_id`	integer NOT NULL,
 	`user_id`	integer NOT NULL,
 	`comment`	longtext,
-	`created_at`	datetime DEFAULT NULL,
+	`created_at`	datetime NOT NULL DEFAULT '',
 	`created_by`	integer DEFAULT NULL,
-	`updated_at`	datetime DEFAULT NULL,
+	`updated_at`	datetime NOT NULL DEFAULT '',
 	`updated_by`	integer DEFAULT NULL,
-	`deleted_at`	datetime DEFAULT NULL,
+	`deleted_at`	datetime NOT NULL DEFAULT '',
 	`deleted_by`	integer DEFAULT NULL,
 	`status`	integer DEFAULT NULL,
 	`time_spent`	integer DEFAULT NULL,
