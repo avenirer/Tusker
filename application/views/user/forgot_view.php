@@ -2,8 +2,8 @@
 <div class="container">
     <div class="row">
         <h1>Did you forget your password?</h1>
+        <p><?php echo $_SESSION['auth_message'];?></p>
         <div class="col-lg-4 col-lg-offset-4">
-            <?php echo $_SESSION['auth_message'];?>
             <?php echo form_open('',array('class'=>'form-horizontal'));?>
             <div class="form-group">
                 <?php echo form_label('Username','username');?>

@@ -38,7 +38,8 @@
                                 <div style="font-size:16px; font-weight:bold;"><?php echo $task['status']; ?>
                                     % <?php echo ($task['closed'] == '1') ? '<span class="glyphicon glyphicon-check"></span>' : '<span class="glyphicon glyphicon-unchecked"></span>'; ?></div>
                                 <div><span class="glyphicon glyphicon-pencil"></span>
-                                    <?php
+                                    <?php /* this check/replace and processing of date should happen in the model, I guess... - Donatas */
+                                    if(!isset($task['updated_at'])){ $task['updated_at'] = $task['created_at']; }
                                     $updated_at = explode(' ', $task['updated_at']);
                                     $updated_at_date = implode('.', array_reverse(explode('-', $updated_at[0])));
                                     $updated_at_time = explode(':', $updated_at[1]);
